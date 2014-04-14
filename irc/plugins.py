@@ -3,8 +3,6 @@ import os
 import imp
 import threading
 
-import irc.util
-
 
 class PluginManager(object):
     """Plugin management object"""
