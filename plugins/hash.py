@@ -6,7 +6,6 @@ event = "PRIVMSG"
 
 def call(ircmessage, con):
     nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
-    print(params)
 
     if len(params) == 1:
         return
@@ -14,7 +13,6 @@ def call(ircmessage, con):
     if not params[0] in ["sha1", "md5", "sha256", "sha512"]:
         return
 
-    print("called test", ircmessage.args)
     con.privmsg(channel, hash(" ".join(params[1:]), params[0]))
 
 

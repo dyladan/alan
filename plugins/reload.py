@@ -7,7 +7,6 @@ def call(msg, con):
 	nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
 	if params[0] == ".reload":
-		print('reloading')
 		start = datetime.utcnow()
 		con.ldplugins(con.plugdir)
 		elapsed = datetime.utcnow() - start
