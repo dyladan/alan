@@ -96,7 +96,6 @@ class Server(object):
                         irc_message = irc.models.IRCMessage(prefix, cmd, args)
 
                         time = datetime.utcnow() - self.start
-                        print(time, "made", irc_message)
 
                         if self.plugin_mgr:
                             self.plugin_mgr.handle(irc_message)

@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 import irc
 
-chanlist = ["#alantest"]
+chanlist = ["#alantest", "#asdf"]
 
 server = "localhost"
 port = 6667
@@ -17,5 +18,5 @@ for chan in chanlist:
 
 while True:
     msg = con.iqueue.get()
-    #print(msg.cmd)
+    print(msg)
     #con.privmsg("#alantest", msg)
