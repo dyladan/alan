@@ -35,3 +35,14 @@ def buildmsg(command, arg=None, payload=None):
         raise Exception("IRCBadMessage")
 
     return msg.encode()
+
+def parseprivmsg(privmsg, mynick):
+    nick = privmsg.prefix.split("!")[0]
+    if privmsg.args[0] == mynick:
+        channel = nick
+    else:
+        channel = privmsg.args[0]
+
+    params = privmsg.args[1].split()
+
+    return nick, channel, params
