@@ -55,6 +55,11 @@ class Server(object):
         data = irc.util.buildmsg("PRIVMSG", chan, msg)
         self.send(data)
 
+    def notice(self, target, msg):
+        """Send a NOTICE"""
+        data = irc.util.buildmsg("NOTICE", target, msg)
+        self.send(data)
+
     def send(self, msg):
         """send a message to the out queue"""
         self.oqueue.put(msg)

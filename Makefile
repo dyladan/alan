@@ -1,12 +1,12 @@
 SYSDEPS := python-virtualenv
 
+.PHONY: run
+run:
+	bin/python alan.py
+
 .PHONY: clean
 clean:
 	rm -rf bin include lib local __pycache__ *.pyc
-
-.PHONY: run
-run:
-	bin/python bot.py
 
 .PHONY: setup
 setup:
