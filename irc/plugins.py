@@ -58,6 +58,19 @@ class PluginManager(object):
         else:
             return False
 
+    def listplugins(self):
+        commands = []
+        for plug in self.plugs:
+            commands.append(plug.command)
+
+        return commands
+
+    def help(self, plugin):
+        for plug in self.plugs:
+            if plug.helptext and plug.command == plugin:
+                return plug.helptext
+        return "No help found for that plugin"
+
 
 class PluginTemplate(object):
     """Template for plugins"""
