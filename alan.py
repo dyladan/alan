@@ -5,7 +5,7 @@ chanlist = ["#alantest", "#asdf"]
 
 server = "localhost"
 port = 6667
-nick = "alan"
+nick = "slevin"
 name = "Alan Turing"
 plugdir = "plugins"
 
@@ -18,5 +18,5 @@ for chan in chanlist:
 
 while True:
     msg = con.iqueue.get()
-    print(msg)
+    #print(msg)
     #con.privmsg("#alantest", msg)

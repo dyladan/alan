@@ -66,9 +66,10 @@ class PluginTemplate(object):
         self.helptext = None
         self.event = "PRIVMSG"
         self.thread = True
+        self.private = False
 
     def call(self, msg, con):
         pass
 
 
-        
+
