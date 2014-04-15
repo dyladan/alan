@@ -1,4 +1,4 @@
-SYSDEPS := python-virtualenv
+SYSDEPS := python-virtualenv libxslt1-dev
 
 .PHONY: run
 run:
