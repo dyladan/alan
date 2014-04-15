@@ -61,12 +61,17 @@ class PluginManager(object):
     def listplugins(self):
         commands = []
         for plug in self.plugs:
-            commands.append(plug.command)
+            if plug.name:
+                commands.append(plug.name)
+            elif plug.command != "ALL":
+                commands.append(plug.command)
 
         return commands
 
     def help(self, plugin):
         for plug in self.plugs:
+            if plug.name == plugin:
+                return plug.helptext or "No help found"
             if plug.helptext and plug.command == plugin:
                 return plug.helptext
         return "No help found for that plugin"
@@ -80,6 +85,7 @@ class PluginTemplate(object):
         self.event = "PRIVMSG"
         self.thread = True
         self.private = False
+        self.name = None
 
     def call(self, msg, con):
         pass
