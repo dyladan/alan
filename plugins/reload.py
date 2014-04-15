@@ -16,6 +16,6 @@ class Plug(irc.plugins.PluginTemplate):
         start = datetime.utcnow()
         con.ldplugins(con.plugdir)
         elapsed = datetime.utcnow() - start
-        count = len(con.plugin_mgr.listplugins())
+        count = len(con.plugin_mgr.plugs)
         con.privmsg(channel, "reloaded %s plugins in %s seconds" % (count, elapsed.total_seconds()))
         
