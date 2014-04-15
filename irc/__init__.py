@@ -79,10 +79,8 @@ class Server(object):
                     data = self.sock.recv(4096)
                     data = data.decode()
                     lines = data.splitlines()
-                    print(lines)
                     for line in lines:
                         print(line)
-                        print("break")
                         if line[:4] == "PING":
                             pong_server = data[6:-2]
                             pong = irc.util.buildmsg("PONG", pong_server)
