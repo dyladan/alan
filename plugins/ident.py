@@ -13,3 +13,4 @@ class Plug(irc.plugins.PluginTemplate):
             if len(params) == 1:
                     return
             con.privmsg("NickServ", "IDENTIFY %s" % params[1])
+            con.privmsg(channel, "Identified with NickServ")
