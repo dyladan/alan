@@ -1,20 +1,15 @@
 import datetime
-event = "PRIVMSG"
-def call(ircmessage, con):
-	nick = ircmessage.prefix.split("!")[0]
-	if ircmessage.args[0] == con.nick:
-		channel = nick
-	else:
-		channel = ircmessage.args[0]
+import irc.plugins
 
-	params = ircmessage.args[1].split()
-	command = params[0]
-	message = " ".join(params[1:])
-	if not command == ".uptime":
-		return
+class Plug(irc.plugins.PluginTemplate):
+	"""Print system uptime"""
+	def __init__(self):
+		super(Plug, self).__init__()
+		self.command = "uptime"
 
-	runtime = datetime.datetime.utcnow() - con.start
+	def call(self, msg, con):
+		nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
+		runtime = datetime.datetime.utcnow() - con.start
 
-
-	con.privmsg(channel, str(runtime))
+		con.privmsg(channel, str(runtime))

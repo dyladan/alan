@@ -1,22 +1,27 @@
 from time import sleep
 import hashlib
 import irc.util
-"""Module for hashing algorithms"""
-event = "PRIVMSG"
+import irc.plugins
 
-def call(ircmessage, con):
-    nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
+class Plug(irc.plugins.PluginTemplate):
+    """Hashing plugin"""
+    def __init__(self):
+        super(Plug, self).__init__()
+        self.helptext = "Does hashes on arguments"
 
-    if len(params) == 1:
-        return
+    def call(self, msg, con):
+        nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
-    if not params[0] in ["sha1", "md5", "sha256", "sha512"]:
-        return
+        if len(params) == 1:
+            return
 
-    con.privmsg(channel, hash(" ".join(params[1:]), params[0]))
+        if not params[0] in ["sha1", "md5", "sha256", "sha512"]:
+            return
+
+        con.privmsg(channel, hash(" ".join(params[1:]), params[0]))
 
 
-def hash(string, hashtype='sha1', blocksize=65536):
+def hash(string, hashtype='sha1'):
     hasher = hashlib.new(hashtype)
     buf = string.encode()
     if len(buf) > 0:

@@ -6,9 +6,10 @@ import threading
 
 class PluginManager(object):
     """Plugin management object"""
-    def __init__(self, plugin_directory, con):
+    def __init__(self, plugin_directory, con, cmdchar="."):
         self.con = con
         self.plugs = self.load_plugins(plugin_directory)
+        self.cmdchar = cmdchar
 
     def load_plugins(self, plugin_directory):
         """Returns a list of plugin files"""
@@ -24,12 +25,13 @@ class PluginManager(object):
                     continue
                 info = imp.find_module(location[:-3])
                 mod = imp.load_module(plug, *info)
-                if mod.event and mod.event == "CRON":
-                    thread = threading.Thread(target=mod.cron, args=(self.con,))
+                plugin = mod.Plug()
+                if plugin.event == "CRON":
+                    thread = threading.Thread(target=plugin.cron, args=(self.con,))
                     thread.daemon = True
                     thread.start()
                     continue
-                plugins.append(mod)
+                plugins.append(plugin)
             except Exception as ex:
                 print(ex)
 
@@ -40,5 +42,33 @@ class PluginManager(object):
         """runs irc msg through plugin manager"""
         for plug in self.plugs:
             if arg.cmd == plug.event:
-                thread = threading.Thread(target=plug.call, args=(arg, self.con))
-                thread.start()
+                if self.checkcmd(arg, plug):
+                    if plug.thread:
+                        thread = threading.Thread(target=plug.call, args=(arg, self.con))
+                        thread.start()
+                    else:
+                        plug.call(arg, self.con)
+
+    def checkcmd(self, msg, plug):
+        params = msg.args[1].split()
+        if plug.command == "ALL":
+            return True
+        if params[0] == self.cmdchar + plug.command:
+            return True
+        else:
+            return False
+
+
+class PluginTemplate(object):
+    """Template for plugins"""
+    def __init__(self):
+        self.command = "ALL"
+        self.helptext = None
+        self.event = "PRIVMSG"
+        self.thread = True
+
+    def call(self, msg, con):
+        pass
+
+
+        
