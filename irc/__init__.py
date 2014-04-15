@@ -80,11 +80,11 @@ class Server(object):
                     data = data.decode()
                     lines = data.splitlines()
                     for line in lines:
+                        print(line)
                         if line[:4] == "PING":
                             pong_server = data[6:-2]
                             pong = irc.util.buildmsg("PONG", pong_server)
-                            self.sock.send(pong)
-                            print("PING > PONG", pong_server)
+                            self.send(pong)
                             continue
 
                         parsed_message = irc.util.parsemsg(line)
