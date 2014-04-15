@@ -15,4 +15,4 @@ class Plug(irc.plugins.PluginTemplate):
             con.privmsg(channel, plugs)
             return
 
-        con.privmsg(channel, con.plugin_mgr.help(params[1]))
+        con.privmsg(channel, con.plugin_mgr.help(" ".join(params[1:])))

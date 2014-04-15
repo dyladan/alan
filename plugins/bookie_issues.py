@@ -6,6 +6,10 @@ import re
 
 class Plug(irc.plugins.PluginTemplate):
     """Find bookie pull issues"""
+    def __init__(self):
+        super(Plug, self).__init__()
+        self.name = "bookie issue helper"
+        self.helptext = "scrapes issues in the form #232"
 
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)

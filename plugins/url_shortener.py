@@ -7,8 +7,10 @@ from lxml import html
 
 class Plug(irc.plugins.PluginTemplate):
     """Shorten any urls"""
-    #def __init__(self):
-    #    super(Plug, self).__init__()
+    def __init__(self):
+        super(Plug, self).__init__()
+        self.name = "url shortener"
+        self.helptext = "scrapes for full URLs in channel"
 
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
