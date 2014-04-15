@@ -68,7 +68,7 @@ class PluginManager(object):
             elif plug.command != "ALL":
                 commands.append(plug.command)
 
-        return " | ".join(sorted(commands))
+        return sorted(commands)
 
     def help(self, plugin):
         for plug in self.plugs:
