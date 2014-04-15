@@ -61,12 +61,14 @@ class PluginManager(object):
     def listplugins(self):
         commands = []
         for plug in self.plugs:
+            if plug.private:
+                continue
             if plug.name:
                 commands.append(plug.name)
             elif plug.command != "ALL":
                 commands.append(plug.command)
 
-        return commands
+        return " | ".join(sorted(commands))
 
     def help(self, plugin):
         for plug in self.plugs:
