@@ -3,6 +3,8 @@ import irc.plugins
 
 import datetime
 import collections
+import os.path
+import pickle
 
 
 class Plug(irc.plugins.PluginTemplate):
@@ -12,6 +14,9 @@ class Plug(irc.plugins.PluginTemplate):
         self.name = "message"
         self.helptext = "Saves a message for a user to receive later - usage: .message nick message"
         self.messages = dict()
+        if os.path.isfile("messages"):
+            with open("messages", "rb") as f:
+                self.messages = pickle.load(f)
 
 
     def call(self, ircmessage, con):
@@ -23,6 +28,8 @@ class Plug(irc.plugins.PluginTemplate):
                 con.privmsg(channel, msg)
 
             del(self.messages[nick])
+            with open("messages", "wb") as f:
+                pickle.dump(self.messages, f)
 
             return
 
@@ -42,5 +49,8 @@ class Plug(irc.plugins.PluginTemplate):
             self.messages[params[1]] = [msg]
 
         print(self.messages)
+
+        with open("messages", "wb") as f:
+            pickle.dump(self.messages, f)
     
         con.privmsg(channel, "%s: I'll tell him" % nick)
