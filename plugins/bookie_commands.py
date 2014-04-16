@@ -23,8 +23,7 @@ class Plug(irc.plugins.PluginTemplate):
         "bugs": "github bugs",
         "newbug": "new github bug",
         "gh": "link to github",
-        "ot": "offtopic prompt",
-        "bmark": ".bmark <user> gets user's latest bookmark on bmark.us"
+        "ot": "offtopic prompt"
         }
 
     def call(self, msg, con):
@@ -40,29 +39,4 @@ class Plug(irc.plugins.PluginTemplate):
 
         if params[0] in self.responses:
             con.privmsg(channel, self.responses[params[0]])
-
-        if params[0] == ".bmark" and len(params) > 1:
-            user = params[1]
-            
-
-        elif params[0] == ".bmark":
-            user = nick
-
-        else:
             return
-
-        if len(params) >= 3:
-            try:
-                num = int(params[2])
-            except:
-                num = 1
-        else:
-            num = 1
-
-
-        user = urllib.parse.quote(user)
-
-        r = requests.get('http://bmark.us/api/v1/%s/bmarks?count=5' % user).json()
-        url = r['bmarks'][num-1]['url']
-        desc = r['bmarks'][num-1]['description']
-        con.privmsg(channel, "%s - %s" % (url, desc))
