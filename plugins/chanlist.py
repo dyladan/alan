@@ -1,14 +1,14 @@
 import irc.util
 import irc.plugins
 class Plug(irc.plugins.PluginTemplate):
-	"""List all connected channels"""
-	def __init__(self):
-		super(Plug, self).__init__()
-		self.command = "chanlist"
-		self.helptext = "Prints all connected channels"
+    """List all connected channels"""
+    def __init__(self):
+        super(Plug, self).__init__()
+        self.command = "chanlist"
+        self.helptext = "Prints all connected channels"
 
-	def call(self, msg, con):
-		nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
+    def call(self, msg, con):
+        nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
-		if params[0] == '.chanlist':
-			con.privmsg(channel, str(con.channels))
+        if params[0] == '.chanlist':
+            con.privmsg(channel, str(con.channels))

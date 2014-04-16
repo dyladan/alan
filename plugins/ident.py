@@ -8,9 +8,9 @@ class Plug(irc.plugins.PluginTemplate):
         self.private = True
 
     def call(self, ircmessage, con):
-            nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
+        nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
 
-            if len(params) == 1:
-                    return
-            con.privmsg("NickServ", "IDENTIFY %s" % params[1])
-            con.privmsg(channel, "Identified with NickServ")
+        if len(params) == 1:
+            return
+        con.privmsg("NickServ", "IDENTIFY %s" % params[1])
+        con.privmsg(channel, "Identified with NickServ")
