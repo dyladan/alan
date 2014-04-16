@@ -30,5 +30,10 @@ class Plug(irc.plugins.PluginTemplate):
 
             response = isgd
 
-            output = "%s - %s" % (isgd['shorturl'], title[0])
+            if "shorturl" in isgd:
+                shorturl = isgd["shorturl"]
+            else:
+                shorturl = url
+
+            output = "%s - %s" % (shorturl, title[0])
             con.privmsg(channel, output)
