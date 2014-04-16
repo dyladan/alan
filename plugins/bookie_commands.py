@@ -1,6 +1,9 @@
-from time import sleep
 import irc.util
 import irc.plugins
+
+import requests
+import urllib.parse
+
 
 class Plug(irc.plugins.PluginTemplate):
     """Plugin to aggregate bookie specific things"""
@@ -21,6 +24,7 @@ class Plug(irc.plugins.PluginTemplate):
         "newbug": "new github bug",
         "gh": "link to github",
         "ot": "offtopic prompt"
+        "bmark": ".bmark <user> gets user's latest bookmark on bmark.us"
         }
 
     def call(self, msg, con):
@@ -36,3 +40,11 @@ class Plug(irc.plugins.PluginTemplate):
 
         if params[0] in self.responses:
             con.privmsg(channel, self.responses[params[0]])
+
+        if params[0] == ".bmark" and len(params) > 1:
+            print("bmark")
+            r = requests.get('http://bmark.us/api/v1/%s/bmarks?count=1' % urllib.parse.quote(params[1])).json()
+            url = r['bmarks'][0]['url']
+            desc = r['bmarks'][0]['description']
+
+            con.privmsg(channel, "%s - %s" % (url, desc))
