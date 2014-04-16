@@ -2,7 +2,7 @@ import datetime
 import irc.plugins
 
 class Plug(irc.plugins.PluginTemplate):
-	"""Print system uptime"""
+	"""Print bot uptime"""
 	def __init__(self):
 		super(Plug, self).__init__()
 		self.command = "uptime"
@@ -13,4 +13,4 @@ class Plug(irc.plugins.PluginTemplate):
 
 		runtime = datetime.datetime.utcnow() - con.start
 
-		con.privmsg(channel, str(runtime))
+		con.privmsg(channel, str(runtime)[:-7])

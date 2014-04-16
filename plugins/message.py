@@ -41,7 +41,9 @@ class Plug(irc.plugins.PluginTemplate):
 
         message = " ".join(params[2:])
 
-        msg = "%s, at %s EST %s said: %s" % (params[1], datetime.datetime.now(), nick, message)
+        time = str(datetime.datetime.now())[:-7]
+
+        msg = "%s, at %s EST %s said: %s" % (params[1], time, nick, message)
 
         try:
             self.messages[params[1]].append(msg)
