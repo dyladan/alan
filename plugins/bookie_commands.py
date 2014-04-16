@@ -23,7 +23,7 @@ class Plug(irc.plugins.PluginTemplate):
         "bugs": "github bugs",
         "newbug": "new github bug",
         "gh": "link to github",
-        "ot": "offtopic prompt"
+        "ot": "offtopic prompt",
         "bmark": ".bmark <user> gets user's latest bookmark on bmark.us"
         }
 
