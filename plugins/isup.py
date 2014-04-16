@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+from datetime import datetime
 
 import irc.util
 import irc.plugins
@@ -21,7 +22,13 @@ class Plug(irc.plugins.PluginTemplate):
         if not url[:4] == "http":
             url = "http://" + url
 
-        code = urlopen(url).getcode()
+        try:
+            start = datetime.utcnow()
+            code = urlopen(url).getcode()
+            end = datetime.utcnow()
 
-        con.privmsg(channel, "%s returns a response code of %s" % (url, code))
+            duration = (end - start).total_seconds()
 
+            con.privmsg(channel, "%s returned a response code of %s in %s seconds" % (url, code, duration))
+        except:
+            con.privmsg(channel, "%s appears to be down" % url)
