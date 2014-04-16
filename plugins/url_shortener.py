@@ -22,7 +22,7 @@ class Plug(irc.plugins.PluginTemplate):
         for url in urls:
             page = requests.get(url)
             tree = html.fromstring(page.text)
-            title = tree.xpath('//title/text()')
+            title = "%s" % " ".join(tree.xpath('//title/text()')[0].split())
             encoded = urllib.parse.quote(url)
             request = "http://is.gd/create.php?format=json&url=%s" % encoded
 
@@ -35,5 +35,5 @@ class Plug(irc.plugins.PluginTemplate):
             else:
                 shorturl = url
 
-            output = "%s - %s" % (shorturl, title[0])
+            output = "%s - %s" % (shorturl, title)
             con.privmsg(channel, output)
