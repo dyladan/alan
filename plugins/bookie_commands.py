@@ -48,11 +48,21 @@ class Plug(irc.plugins.PluginTemplate):
         elif params[0] == ".bmark":
             user = nick
 
-        else: return
+        else:
+            return
+
+        if len(params) >= 3:
+            try:
+                num = int(params[2])
+            except:
+                num = 1
+        else:
+            num = 1
+
 
         user = urllib.parse.quote(user)
 
-        r = requests.get('http://bmark.us/api/v1/%s/bmarks?count=1' % user).json()
-        url = r['bmarks'][0]['url']
-        desc = r['bmarks'][0]['description']
+        r = requests.get('http://bmark.us/api/v1/%s/bmarks?count=5' % user).json()
+        url = r['bmarks'][num-1]['url']
+        desc = r['bmarks'][num-1]['description']
         con.privmsg(channel, "%s - %s" % (url, desc))
