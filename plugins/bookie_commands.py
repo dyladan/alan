@@ -45,8 +45,10 @@ class Plug(irc.plugins.PluginTemplate):
             user = params[1]
             
 
-        else:
+        elif params[0] == ".bmark":
             user = nick
+
+        else: return
 
         user = urllib.parse.quote(user)
 
