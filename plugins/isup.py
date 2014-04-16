@@ -16,15 +16,12 @@ class Plug(irc.plugins.PluginTemplate):
         if len(params) == 1:
             return
 
-        if self.isup(params[1]):
-            message = "Looks up to me"
-        else:
-            messate = "oh no looks down"
+        url = params[1]
 
-        con.privmsg(channel, message)
+        if not url[:4] == "http":
+            url = "http://" + url
 
-    def isup(self, domain):
-        request = urlopen('http://www.isup.me/' + domain).read()
-        if type(request) != type(''):
-            request = request.decode('utf-8')
-        return bool("It's just you" in request)
+        code = urlopen(url).getcode()
+
+        con.privmsg(channel, "%s returns a response code of %s" % (url, code))
+
