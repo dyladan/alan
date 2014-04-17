@@ -56,10 +56,19 @@ class Server(object):
         self.channels.remove(chan)
         self.send(irc.util.buildmsg("PART", chan))
 
+    def quit(self, reason="ByeBye"):
+        self.send(irc.util.buildmsg("QUIT","", reason))
+
     def privmsg(self, chan, msg):
         """Send a PRIVMSG"""
+        tail = None
+        if len(msg) > 360:
+            tail = msg[360:]
+            msg = msg[:360]
         data = irc.util.buildmsg("PRIVMSG", chan, msg)
         self.send(data)
+        if tail:
+            self.privmsg(chan, tail)
 
     def notice(self, target, msg):
         """Send a NOTICE"""
@@ -92,6 +101,7 @@ class Server(object):
                             pong = irc.util.buildmsg("PONG", pong_server)
                             self.send(pong)
                             continue
+
 
                         parsed_message = irc.util.parsemsg(line)
 
