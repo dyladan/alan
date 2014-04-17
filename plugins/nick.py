@@ -1,7 +1,7 @@
 import irc.util
 import irc.plugins
 class Plug(irc.plugins.PluginTemplate):
-    """Identify with NickServ"""
+    """Deauth on nick changes"""
     def __init__(self):
         super(Plug, self).__init__()
         self.event = "NICK"

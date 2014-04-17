@@ -51,6 +51,11 @@ class Server(object):
         self.channels.add(chan)
         self.send(irc.util.buildmsg("JOIN", chan))
 
+    def part(self, chan):
+        """PART an IRC channel"""
+        self.channels.remove(chan)
+        self.send(irc.util.buildmsg("PART", chan))
+
     def privmsg(self, chan, msg):
         """Send a PRIVMSG"""
         data = irc.util.buildmsg("PRIVMSG", chan, msg)

@@ -14,8 +14,8 @@ class Plug(irc.plugins.PluginTemplate):
         self.name = "message"
         self.helptext = "Saves a message for a user to receive later - usage: .message nick message"
         self.messages = dict()
-        if os.path.isfile("messages"):
-            with open("messages", "rb") as f:
+        if os.path.isfile("messages.pickle"):
+            with open("messages.pickle", "rb") as f:
                 self.messages = pickle.load(f)
 
 
@@ -23,12 +23,11 @@ class Plug(irc.plugins.PluginTemplate):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
 
         if nick in self.messages:
-            print(nick, "in messages")
             for msg in self.messages[nick]:
                 con.privmsg(channel, msg)
 
             del(self.messages[nick])
-            with open("messages", "wb") as f:
+            with open("messages.pickle", "wb") as f:
                 pickle.dump(self.messages, f)
 
             return
@@ -52,7 +51,7 @@ class Plug(irc.plugins.PluginTemplate):
 
         print(self.messages)
 
-        with open("messages", "wb") as f:
+        with open("messages.pickle", "wb") as f:
             pickle.dump(self.messages, f)
     
         con.privmsg(channel, "%s: I'll tell him" % nick)
