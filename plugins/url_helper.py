@@ -21,8 +21,17 @@ class Plug(irc.plugins.PluginTemplate):
 
         for url in urls:
             page = requests.get(url)
+            if 'content-type' in page.headers:
+                content_type = page.headers['content-type']
+                if not content_type == "text/html":
+                    return
             tree = html.fromstring(page.text)
-            title = "%s" % " ".join(tree.xpath('//title/text()')[0].split())
+            title_node = tree.xpath('//title/text()')
+            print(title_node)
+            if title_node:
+                title = "%s" % " ".join(title_node[0].split())
+            else:
+                title = "No Title"
             encoded = urllib.parse.quote(url)
             request = "http://is.gd/create.php?format=json&url=%s" % encoded
 
