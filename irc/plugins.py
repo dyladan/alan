@@ -42,15 +42,16 @@ class PluginManager(object):
 
     def handle(self, arg):
         """runs irc msg through plugin manager"""
-        params = arg.args[1].split()
-        nick = arg.prefix.split("!")[0]
-        if params[0] == self.cmdchar + "auth" and len(params) > 1:
-            print("auth requested by %s with password %s" % (nick, params[1]))
-            if params[1] == self.password:
-                self.admins.add(nick)
-                self.con.privmsg(nick, "authed")
-                print("current admins: %s" % self.admins)
-                return
+        if arg.cmd == "PRIVMSG":
+            params = arg.args[1].split()
+            nick = arg.prefix.split("!")[0]
+            if params[0] == self.cmdchar + "auth" and len(params) > 1:
+                print("auth requested by %s with password %s" % (nick, params[1]))
+                if params[1] == self.password:
+                    self.admins.add(nick)
+                    self.con.privmsg(nick, "authed")
+                    print("current admins: %s" % self.admins)
+                    return
         for plug in self.plugs:
             if arg.cmd == plug.event:
                 if self.checkcmd(arg, plug):
@@ -60,15 +61,18 @@ class PluginManager(object):
                     else:
                         plug.call(arg, self.con)
 
+
     def checkcmd(self, msg, plug):
+        if not plug.command:
+            return True
+
         params = msg.args[1].split()
         nick = msg.prefix.split("!")[0]
 
 
         if plug.protected and not nick in self.admins:
             return
-        if not plug.command:
-            return True
+
         if params[0] == self.cmdchar + plug.command:
             return True
         else:
