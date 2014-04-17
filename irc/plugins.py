@@ -6,10 +6,12 @@ import threading
 
 class PluginManager(object):
     """Plugin management object"""
-    def __init__(self, plugin_directory, con, cmdchar="."):
+    def __init__(self, plugin_directory, con, cmdchar=".", password=None):
         self.con = con
         self.plugs = self.load_plugins(plugin_directory)
         self.cmdchar = cmdchar
+        self.admins = set()
+        self.password = password
 
     def load_plugins(self, plugin_directory):
         """Returns a list of plugin files"""
@@ -40,6 +42,15 @@ class PluginManager(object):
 
     def handle(self, arg):
         """runs irc msg through plugin manager"""
+        params = arg.args[1].split()
+        nick = arg.prefix.split("!")[0]
+        if params[0] == self.cmdchar + "auth" and len(params) > 1:
+            print("auth requested by %s with password %s" % (nick, params[1]))
+            if params[1] == self.password:
+                self.admins.add(nick)
+                self.con.privmsg(nick, "authed")
+                print("current admins: %s" % self.admins)
+                return
         for plug in self.plugs:
             if arg.cmd == plug.event:
                 if self.checkcmd(arg, plug):
@@ -51,7 +62,12 @@ class PluginManager(object):
 
     def checkcmd(self, msg, plug):
         params = msg.args[1].split()
-        if plug.command == "ALL":
+        nick = msg.prefix.split("!")[0]
+
+
+        if plug.protected and not nick in self.admins:
+            return
+        if not plug.command:
             return True
         if params[0] == self.cmdchar + plug.command:
             return True
@@ -65,7 +81,7 @@ class PluginManager(object):
                 continue
             if plug.name:
                 commands.append(plug.name)
-            elif plug.command != "ALL":
+            elif plug.command:
                 commands.append(plug.command)
 
         return sorted(commands)
@@ -82,12 +98,13 @@ class PluginManager(object):
 class PluginTemplate(object):
     """Template for plugins"""
     def __init__(self):
-        self.command = "ALL"
+        self.command = None
         self.helptext = None
         self.event = "PRIVMSG"
         self.thread = True
         self.private = False
         self.name = None
+        self.protected = False
 
     def call(self, msg, con):
         pass

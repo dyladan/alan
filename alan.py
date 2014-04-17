@@ -8,8 +8,9 @@ port = 6667
 nick = "slevin"
 name = "Alan Turing"
 plugdir = "plugins"
+password = None
 
-con = irc.Server(server, port, nick, name, plugdir)
+con = irc.Server(server, port, nick, name, plugdir, password)
 
 react = con.react()
 

@@ -9,8 +9,7 @@ class Plug(irc.plugins.PluginTemplate):
     """Plugin to aggregate bookie specific things"""
     def __init__(self):
         super(Plug, self).__init__()
-        self.helptext = "Bookie plugins - .b for commands"
-        self.command = "b"
+        self.command = "bookie"
         self.responses = {
         "logs": "http://logs.bmark.us",
         "bugs": "https://github.com/bookieio/Bookie/issues",
@@ -18,6 +17,7 @@ class Plug(irc.plugins.PluginTemplate):
         "gh": "https://github.com/bookieio/Bookie",
         "ot": "Please stay on topic"
         }
+
         self.help = {
         "logs": "bookie logs",
         "bugs": "github bugs",
@@ -26,11 +26,12 @@ class Plug(irc.plugins.PluginTemplate):
         "ot": "offtopic prompt"
         }
 
+        self.helptext = str(self.help)
+
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
         if len(params) == 1:
-            con.privmsg(channel, " | ".join(list(self.help.keys())))
             return
         
         if params[1] in self.help:

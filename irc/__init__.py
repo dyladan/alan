@@ -11,12 +11,13 @@ import irc.plugins
 
 class Server(object):
     """Core connection class"""
-    def __init__(self, server, port, nick, name, plugdir=None):
+    def __init__(self, server, port, nick, name, plugdir=None, password=None):
         self.iqueue = queue.Queue()
         self.oqueue = queue.Queue()
         self.channels = set()
         self.nick = None
         self.name = None
+        self.password = password
         self.plugdir = plugdir
         self.plugin_mgr = None
         self.start = datetime.utcnow()
@@ -33,7 +34,7 @@ class Server(object):
 
     def ldplugins(self, plugdir):
         """creates a plugin manager to load plugdir"""
-        self.plugin_mgr = irc.plugins.PluginManager(plugdir, self)
+        self.plugin_mgr = irc.plugins.PluginManager(plugdir, self, cmdchar=".", password=self.password)
 
     def setnick(self, nick):
         """Set IRC nick"""
