@@ -1,5 +1,6 @@
 """Module for extensible IRC bots"""
 import queue
+import os
 import socket
 import threading
 from datetime import datetime
@@ -104,6 +105,10 @@ class Server(object):
 
 
                         parsed_message = irc.util.parsemsg(line)
+
+                        if parsed_message[1] == "ERROR":
+                            print(parsed_message)
+                            os._exit(0)
 
                         prefix = parsed_message[0]
                         cmd = parsed_message[1]
