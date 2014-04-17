@@ -10,5 +10,4 @@ class Plug(irc.plugins.PluginTemplate):
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
-        if params[0] == '.chanlist':
-            con.privmsg(channel, str(con.channels))
+        con.privmsg(channel, "Current channels: %s" % " ".join(con.channels))
