@@ -20,7 +20,7 @@ class Plug(irc.plugins.PluginTemplate):
         if len(params) >= 2:
             user = params[1]
 
-        if len(params) == 3:
+        if len(params) >= 3:
             try:
                 history = int(params[2])
             except:
