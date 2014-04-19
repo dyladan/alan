@@ -5,6 +5,7 @@ import datetime
 import collections
 import os.path
 import pickle
+import lockfile
 
 
 class Plug(irc.plugins.PluginTemplate):
@@ -14,8 +15,10 @@ class Plug(irc.plugins.PluginTemplate):
         self.name = "message"
         self.helptext = "Saves a message for a user to receive later - usage: .message nick message"
         self.messages = dict()
-        if os.path.isfile("messages.pickle"):
-            with open("messages.pickle", "rb") as f:
+        self.file = "messages.pickle"
+        self.lock = lockfile.FileLock(self.file)
+        if os.path.isfile(self.file):
+            with open(self.file, "rb") as f:
                 self.messages = pickle.load(f)
 
 
@@ -27,8 +30,10 @@ class Plug(irc.plugins.PluginTemplate):
                 con.privmsg(channel, msg)
 
             del(self.messages[nick])
-            with open("messages.pickle", "wb") as f:
+            self.lock.acquire()
+            with open(self.file, "wb") as f:
                 pickle.dump(self.messages, f)
+            self.lock.release()
 
             return
 
@@ -51,7 +56,8 @@ class Plug(irc.plugins.PluginTemplate):
 
         print(self.messages)
 
-        with open("messages.pickle", "wb") as f:
+        self.lock.acquire()
+        with open(self.file, "wb") as f:
             pickle.dump(self.messages, f)
-    
+        self.lock.release()
         con.privmsg(channel, "%s: I'll tell him" % nick)
