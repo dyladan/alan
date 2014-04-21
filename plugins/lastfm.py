@@ -17,6 +17,9 @@ class Plug(irc.plugins.PluginTemplate):
     def call(self, ircmessage, con):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
 
+        if channel = "#bookie":
+            return
+
         if len(params) == 1:
             return
 
