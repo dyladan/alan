@@ -23,7 +23,14 @@ class PluginManager(object):
         for plug in possible_plugins:
             try:
                 location = os.path.join(plugin_directory, plug)
-                if os.path.isdir(location) or not location[-3:] == ".py":
+                if os.path.isdir(location):
+                    print("Found dir %s" % location)
+                    continue
+                if not location[-3:] == ".py":
+                    print("Not a python file %s" % location)
+                    continue
+                if location.split("/")[-1][0] == "_":
+                    print("Ignored %s" % location)
                     continue
                 info = imp.find_module(location[:-3])
                 mod = imp.load_module(plug, *info)
