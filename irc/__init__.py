@@ -107,7 +107,6 @@ class Server(object):
                         parsed_message = irc.util.parsemsg(line)
 
                         if parsed_message[1] == "ERROR":
-                            print(parsed_message)
                             os._exit(0)
 
                         prefix = parsed_message[0]
