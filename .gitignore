@@ -8,3 +8,4 @@ local/
 ideas
 *.pickle
 *.apikey
+*sublime*

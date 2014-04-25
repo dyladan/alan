@@ -1,14 +1,14 @@
-#!/usr/bin/python3
+#!bin/python3
 import irc
 
-chanlist = ["#alantest", "#asdf"]
+chanlist = ["#alan"]
 
 server = "localhost"
 port = 6667
-nick = "slevin"
+nick = "alan"
 name = "Alan Turing"
 plugdir = "plugins"
-password = None
+password = "password"
 
 con = irc.Server(server, port, nick, name, plugdir, password)
 
@@ -18,6 +18,8 @@ for chan in chanlist:
     con.join(chan)
 
 while True:
-    msg = con.iqueue.get()
-    #print(msg)
-    #con.privmsg("#alantest", msg)
+    try:
+        msg = con.iqueue.get()
+    except KeyboardInterrupt:
+        con.quit("KeyboardInterrupt")
+
