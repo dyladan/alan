@@ -15,11 +15,16 @@ class Plug(irc.plugins.PluginTemplate):
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
+        if nick == "bookie_sentry":
+            return
+
         message = " ".join(params)
 
         urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
 
         for url in urls:
+            if "bmark.us" in url:
+                continue
             page = requests.get(url)
             if 'content-type' in page.headers:
                 content_type = page.headers['content-type']
