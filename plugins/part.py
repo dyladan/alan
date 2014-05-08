@@ -5,10 +5,11 @@ class Plug(irc.plugins.PluginTemplate):
         super(Plug, self).__init__()
         self.command = "part"
         self.protected = True
+        self.private = True
 
     def call(self, ircmessage, con):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
-        
+
         if len(params) == 1:
             con.part(channel)
             return

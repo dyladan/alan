@@ -8,7 +8,7 @@ class Plug(irc.plugins.PluginTemplate):
     def __init__(self):
         super(Plug, self).__init__()
         self.command = "insult"
-        self.helptext = None
+        self.helptext = "insults people - usage: .insult [nick]"
         self.event = "PRIVMSG"
         self.thread = True
         self.private = False

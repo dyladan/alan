@@ -6,7 +6,7 @@ class Plug(irc.plugins.PluginTemplate):
     def __init__(self):
         super(Plug, self).__init__()
         self.command = "sleep"
-        self.helptext = "Simply echos your message back to you - usage: .echo <args>"
+        self.helptext = "sleeps for a given number of seconds - usage: .sleep <time>"
 
     def call(self, ircmessage, con):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
