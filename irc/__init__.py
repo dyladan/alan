@@ -31,7 +31,7 @@ class Server(object):
         self.setuser(name)
 
         if plugdir:
-            self.ldplugins("plugins")
+            self.ldplugins(plugdir)
 
     def ldplugins(self, plugdir):
         """creates a plugin manager to load plugdir"""
