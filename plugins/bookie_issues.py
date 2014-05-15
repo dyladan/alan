@@ -1,4 +1,3 @@
-import re
 import irc.util
 import irc.plugins
 import requests
