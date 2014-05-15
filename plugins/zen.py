@@ -36,7 +36,12 @@ class Plug(irc.plugins.PluginTemplate):
     def call(self, ircmessage, con):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
 
-        con.privmsg(channel, self.zen[int(params[1])-1])
+        if len(params) == 1:
+            zen = random.choice(self.zen)
+        else:
+            zen = self.zen[int(params[1])-1]
+
+        con.privmsg(channel, zen)
         pass
 
 def str(line):
