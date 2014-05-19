@@ -4,6 +4,7 @@ import irc.plugins
 import urllib.parse
 import requests
 from lxml import html
+import json
 
 class Plug(irc.plugins.PluginTemplate):
     """Shorten any urls"""
@@ -25,6 +26,8 @@ class Plug(irc.plugins.PluginTemplate):
         for url in urls:
             if "bmark.us" in url:
                 continue
+
+            print(url)
             page = requests.get(url)
             if 'content-type' in page.headers:
                 content_type = page.headers['content-type']
@@ -41,15 +44,20 @@ class Plug(irc.plugins.PluginTemplate):
                 if title_node:
                     title = "%s" % " ".join(title_node[0].split())
 
-            encoded = urllib.parse.quote(url)
-            request = "http://is.gd/create.php?format=json&url=%s" % encoded
+            request = "https://www.googleapis.com/urlshortener/v1/url"
 
-            isgd = requests.get(request).json()
+            payload = {"longUrl": url}
+            headers = {'content-type': 'application/json'}
 
-            response = isgd
+            print("%s %s" %(request, payload))
+            googl = requests.post(request, data=json.dumps(payload), headers=headers).json()
 
-            if "shorturl" in isgd:
-                shorturl = isgd["shorturl"]
+            response = googl
+
+            print(response)
+
+            if "id" in googl:
+                shorturl = googl["id"]
                 output = "%s - %s" % (shorturl, title)
             else:
                 shorturl = url
