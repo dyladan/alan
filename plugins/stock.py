@@ -29,19 +29,14 @@ class Plug(irc.plugins.PluginTemplate):
 
         stock = value["query"]["results"]["quote"]
 
-        name = stock["Name"]
-        percent = stock["PercentChange"]
-        change = stock["Change"]
-        price = stock["LastTradePriceOnly"]
-        start = stock["Open"]
-        high = stock["DaysHigh"]
-        low = stock["DaysLow"]
-        volume = stock["Volume"]
-        last_time = stock["LastTradeTime"]
+        if float(stock['Change']) < 0:
+            stock["Color"] = "5"
+        else:
+            stock['Color'] = "3"
 
-        msg = "%s - $%s %s (%s) H:$%s L:$%s O:$%s Volume:%s [%s]" % (name, price, change, percent, high, low, start, volume, last_time)
+        msg = "%(Name)s - $%(LastTradePriceOnly)s " \
+          "\x03%(Color)s%(Change)s (%(PercentChange)s)\x03 " \
+          "H:$%(DaysHigh)s L:$%(DaysLow)s O:$%(Open)s " \
+          "Volume:%(Volume)s [%(LastTradeTime)s]" % stock
 
         con.privmsg(channel, msg)
-
-
-        print(stock)
