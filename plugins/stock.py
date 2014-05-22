@@ -39,7 +39,7 @@ class Plug(irc.plugins.PluginTemplate):
         volume = stock["Volume"]
         last_time = stock["LastTradeTime"]
 
-        msg = "%s - %s %s (%s) H:%s L:%s O:%s Volume:%s [%s]" % (name, price, change, percent, high, low, start, volume, last_time)
+        msg = "%s - $%s %s (%s) H:$%s L:$%s O:$%s Volume:%s [%s]" % (name, price, change, percent, high, low, start, volume, last_time)
 
         con.privmsg(channel, msg)
 
