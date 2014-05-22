@@ -1,0 +1,47 @@
+import irc.util
+import irc.plugins
+import requests
+
+class Plug(irc.plugins.PluginTemplate):
+    """Describe your plugin here"""
+    def __init__(self):
+        super(Plug, self).__init__()
+        self.command = "stock"
+        self.helptext = ".stock <symbol> - get stock data"
+
+    def call(self, ircmessage, con):
+        nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
+
+        if len(params) == 1:
+            return
+
+        url = "https://query.yahooapis.com/v1/public/yql"
+        q = 'SELECT * FROM yahoo.finance.quotes WHERE symbol="%s" LIMIT 1' % params[1]
+        payload = {
+            'q': q,
+            'format': 'json',
+            'env': 'store://datatables.org/alltableswithkeys'
+        }
+
+        
+
+        value = requests.get(url, params=payload).json()
+
+        stock = value["query"]["results"]["quote"]
+
+        name = stock["Name"]
+        percent = stock["PercentChange"]
+        change = stock["Change"]
+        price = stock["LastTradePriceOnly"]
+        start = stock["Open"]
+        high = stock["DaysHigh"]
+        low = stock["DaysLow"]
+        volume = stock["Volume"]
+        last_time = stock["LastTradeTime"]
+
+        msg = "%s - %s %s (%s) H:%s L:%s O:%s Volume:%s [%s]" % (name, price, change, percent, high, low, start, volume, last_time)
+
+        con.privmsg(channel, msg)
+
+
+        print(stock)
