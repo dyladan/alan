@@ -38,11 +38,14 @@ class Plug(irc.plugins.PluginTemplate):
             title = content_type
 
             if "html" in content_type:
+                content = page.text
                 tree = html.fromstring(page.text)
                 title_node = tree.xpath('//title/text()')
                 print(title_node)
                 if title_node:
                     title = "%s" % " ".join(title_node[0].split())
+            else:
+                content = None
 
             request = "https://www.googleapis.com/urlshortener/v1/url"
 
@@ -62,5 +65,23 @@ class Plug(irc.plugins.PluginTemplate):
             else:
                 shorturl = url
                 output = "%s" % title
+
+
+            apikey = ""
+            with open("bookiebot.apikey") as keyfile:
+                apikey = keyfile.read().strip()
+
+            api = "https://bmark.us/api/v1/bookiebot/bmark?api_key=%s" % apikey
+            
+            payload = {
+                'url': url,
+                'description': title,
+                'tags': nick
+            }
+
+            if content:
+                payload['content'] = content
+
+            requests.post(api, data=payload)
 
             con.privmsg(channel, output)
