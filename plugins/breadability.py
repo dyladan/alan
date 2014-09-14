@@ -23,6 +23,8 @@ class Plug(irc.plugins.PluginTemplate):
         filename = "".join(random.sample(self.chars, 3))
         print(filename)
         with open(self.prefix + filename, "w") as f:
+            f.write('<html><body style="width:800px;margin-right:auto;margin-left:auto;"><meta http-equiv="Content-Type" content="text/html;charset=utf-8">')
             f.write(readable)
+            f.write('</body></html>')
 
         con.privmsg(channel, "http://read.dyladan.me/%s" % filename)
