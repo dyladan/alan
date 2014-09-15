@@ -8,8 +8,8 @@ class Plug(irc.plugins.PluginTemplate):
     """Describe your plugin here"""
     def __init__(self):
         super(Plug, self).__init__()
-        self.command = "read"
-        self.helptext = ".read <url>"
+        self.command = "bread"
+        self.helptext = ".bread <url>"
         lower = list(map(chr, range(97, 123)))
         upper = list(map(chr, range(65, 91)))
         nums = list(map(str, range(0,10)))

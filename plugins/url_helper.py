@@ -16,6 +16,9 @@ class Plug(irc.plugins.PluginTemplate):
     def call(self, msg, con):
         nick, channel, params = irc.util.parseprivmsg(msg, con.nick)
 
+        if len(params) > 1 and params[0] == ".read":
+            return
+
         if nick == "bookie_sentry":
             return
 
@@ -25,6 +28,8 @@ class Plug(irc.plugins.PluginTemplate):
 
         for url in urls:
             if "bmark.us" in url:
+                continue
+            if "bookie.io" in url:
                 continue
 
             print(url)
@@ -66,22 +71,28 @@ class Plug(irc.plugins.PluginTemplate):
                 shorturl = url
                 output = "%s" % title
 
+            con.privmsg(channel, output)
+
+            if channel == "#bookie":
+                return
 
             apikey = ""
             with open("bookiebot.apikey") as keyfile:
                 apikey = keyfile.read().strip()
 
-            api = "https://bmark.us/api/v1/bookiebot/bmark?api_key=%s" % apikey
-            
+            api = "https://bookie.io/api/v1/bookiebot/bmark?api_key=%s" % apikey
+
             payload = {
                 'url': url,
                 'description': title,
                 'tags': nick
             }
 
-            if content:
+            if False and content:
                 payload['content'] = content
 
-            requests.post(api, data=payload)
+            print(payload)
+            response = requests.post(api, data=payload, verify=False)
 
-            con.privmsg(channel, output)
+            print(response.text)
+
