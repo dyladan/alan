@@ -2,6 +2,7 @@
 import os
 import imp
 import threading
+import time
 
 
 class PluginManager(object):
@@ -16,6 +17,9 @@ class PluginManager(object):
     def load_plugins(self, plugin_directory):
         """Returns a list of plugin files"""
         plugins = []
+        t = str(time.time())
+        with open(".cron.running", 'w') as f:
+            f.write(t)
 
         possible_plugins = os.listdir(plugin_directory)
         print("Possible Plugins:", possible_plugins)
@@ -36,7 +40,7 @@ class PluginManager(object):
                 mod = imp.load_module(plug, *info)
                 plugin = mod.Plug()
                 if plugin.event == "CRON":
-                    thread = threading.Thread(target=plugin.cron, args=(self.con,))
+                    thread = threading.Thread(target=plugin.cron, args=(self.con,t))
                     thread.daemon = True
                     thread.start()
                     continue
@@ -100,10 +104,10 @@ class PluginManager(object):
     def help(self, plugin):
         for plug in self.plugs:
             if plug.name == plugin:
-                return plug.helptext or "No help found"
+                return plug.helptext or None
             if plug.helptext and plug.command == plugin:
                 return plug.helptext
-        return "No help found for that plugin"
+        return None
 
 
 class PluginTemplate(object):
