@@ -15,4 +15,7 @@ class Plug(irc.plugins.PluginTemplate):
             con.privmsg(channel, plugs)
             return
 
-        con.privmsg(channel, con.plugin_mgr.help(" ".join(params[1:])))
+        helptext = con.plugin_mgr.help(" ".join(params[1:]))
+
+        if helptext:
+            con.privmsg(channel, helptext)

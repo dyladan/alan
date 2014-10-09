@@ -27,7 +27,8 @@ class Plug(irc.plugins.PluginTemplate):
                 if not story['link'] in self.seen:
                     con.privmsg(self.secchan, "%s %s" % (story['link'], story['title']))
                     self.seen[story['link']] = story['title']
-            time.sleep(6)
+            time.sleep(60)
+            print("security.py running")
 
 def get_recent():
     stories = get_all()

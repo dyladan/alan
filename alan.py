@@ -1,14 +1,14 @@
 #!bin/python3
 import irc
 
-chanlist = ["#alan"]
+chanlist = ["#geekboy", "#security-announce"]
 
 server = "localhost"
-port = 6667
-nick = "alan"
+port = 9876
+nick = "dickbot"
 name = "Alan Turing"
-plugdir = "plugins"
-password = "password"
+plugdir = "gb_plugins"
+password = "fsmor;06"
 
 con = irc.Server(server, port, nick, name, plugdir, password)
 
