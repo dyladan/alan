@@ -50,6 +50,8 @@ class Server(object):
     def join(self, chan):
         """Join an IRC channel"""
         self.channels.add(chan)
+        if os.path.exists(chan):
+            os.remove(chan)
         self.send(irc.util.buildmsg("JOIN", chan))
 
     def part(self, chan):

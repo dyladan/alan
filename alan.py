@@ -1,7 +1,7 @@
 #!bin/python3
 import irc
 
-chanlist = ["#geeboy"]
+chanlist = ["#geekboy"]
 
 server = "localhost"
 port = 6667

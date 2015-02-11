@@ -9,6 +9,7 @@ class Plug(irc.plugins.PluginTemplate):
 
     def call(self, ircmessage, con):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
+        return
 
         if len(params) == 1:
             plugs = " | ".join(con.plugin_mgr.listplugins())

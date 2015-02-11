@@ -1,5 +1,6 @@
 import irc.util
 import irc.plugins
+import random
 
 class Plug(irc.plugins.PluginTemplate):
     """Describe your plugin here"""
