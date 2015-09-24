@@ -1,4 +1,5 @@
 __pycache__/
+gb_plugins
 *.py[cod]
 bin/
 include/
@@ -9,3 +10,5 @@ ideas
 *.pickle
 *.apikey
 *sublime*
+\#*
+.cron.running

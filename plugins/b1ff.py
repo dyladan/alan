@@ -12,7 +12,7 @@ class Plug(irc.plugins.PluginTemplate):
         nick, channel, params = irc.util.parseprivmsg(ircmessage, con.nick)
         msg = " ".join(params[1:]).encode()
 
-        p1 = subprocess.Popen("b1ff", stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        p1 = subprocess.Popen("./b1ff", stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
         output = p1.communicate(input=msg)[0].decode()
 
